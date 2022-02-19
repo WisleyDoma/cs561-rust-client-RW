@@ -28,38 +28,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     password: "o2LAJH12Y2!kq1dA".into()
     };
 
-    // declared authentication's response:
-    let auth_response = reqwest::Client::new()
-      .post("http://44.197.118.88:3000/v1/auth")
-      .json(&user)
-      .send()
-      .await?;
-    
-    // parse the json response:  
-    let json_response = auth_response.json::<model::UserResponse()>.await?;
-
-    // declare weather response:
-    let weather_response = client
-      .get("http://44.197.118.88:3000/v1/weather")
-      .header("Authorization", "Bearer ".to_owned() + &js.access_token)
-      .send()
-      .await?;
-    
-    // sending the weather response:
-    let weather_prime = response.json::<model::Weather>().await?;
-
-    println!("\nWeather_prime is running from the server on EC2 instances:\n {:?}", weather_prime);
-
-    // same as weather's: Declare the variable, then send it back to the user.
-    let hello_response = client
-        .get("http://44.197.118.88:3000/v1/hello")
-        .header("Authorization", "Basic ".to_owned() + &js.access_token)
+    let response = client
+        .get("https://api.openweathermap.org/data/2.5/weather?q=corvallis&appid=b98e3f089c86867862f28236d174368a&&units=imperial")
         .send()
         .await?;
 
-    let hello_prime = response.json::<model::Hello>().await?;    
+    let weather2 = response
+        .json::<model::Weather>()
+        .await?;
 
-    println!("\nHello_prime is running from the server on EC2 instances:\n {:?}", hello_prime);
+    println!("\nWeather from openweathermap.org:\n {:?}", weather2);
 
     Ok(())
 }
