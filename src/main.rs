@@ -22,6 +22,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //
 
     let client = reqwest::Client::new();
+    // declared users here:
+    let user = model::User {
+    username: "Ricardo".into()
+    password: "o2LAJH12Y2!kq1dA".into()
+    };
 
     let response = client
         .get("https://api.openweathermap.org/data/2.5/weather?q=corvallis&appid=b98e3f089c86867862f28236d174368a&&units=imperial")
